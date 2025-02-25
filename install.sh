@@ -63,7 +63,6 @@ if docker-safe ps -a --filter "name=shardeum-validator" --format "{{.Names}}" | 
     docker-safe rm shardeum-validator 2>/dev/null
 fi
 
-# Ensure correct ownership of NODEHOME
 target_uid=1000
 owner_uid=$(stat -c '%u' "$NODEHOME")
 if [ "$owner_uid" -ne "$target_uid" ]; then
@@ -94,15 +93,12 @@ echo "Shardeum Validator starting. Waiting for the container to be available..."
 timeout=60
 elapsed=0
 
-while [ ! -f "${NODEHOME}/set-password.sh" ]; do
-  sleep 1
-  elapsed=$((elapsed + 1))
-  if [ "$elapsed" -ge "$timeout" ]; then
-    echo "Timeout: set-password.sh not found after 60 seconds."
-    exit 1
-  fi
-done
+PASSWORD=$(tr -dc 'A-Za-z0-9!@#$%^&*()-_=+' </dev/urandom | fold -w 16 | head -n 1)
 
-"${NODEHOME}/set-password.sh"
+docker-safe exec -it shardeum-validator operator-cli gui set password "$PASSWORD"
 
-echo "Shardeum Validator is now running. Access the dashboard at https://${EXTERNALIP}:${DASHPORT}/"
+echo "$PASSWORD" > /root/password.txt
+
+DASHBOARD_URL="http://${EXTERNALIP}:${DASHPORT}/"
+echo "$DASHBOARD_URL" > /root/dashboard_url.txt
+echo "Shardeum Validator is now running."
