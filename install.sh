@@ -93,7 +93,7 @@ echo "Shardeum Validator starting. Waiting for the container to be available..."
 
 PASSWORD=$(tr -dc 'A-Za-z0-9!@#$%^&*()-_=+' </dev/urandom | fold -w 16 | head -n 1)
 
-docker-safe exec -it shardeum-validator operator-cli gui set password "$PASSWORD"
+docker-safe exec shardeum-validator operator-cli gui set password "$PASSWORD"
 
 echo "$PASSWORD" > /root/password.txt
 
