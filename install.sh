@@ -90,8 +90,6 @@ docker-safe run \
     ghcr.io/shardeum/shardeum-validator 1>/dev/null
 
 echo "Shardeum Validator starting. Waiting for the container to be available..."
-timeout=60
-elapsed=0
 
 PASSWORD=$(tr -dc 'A-Za-z0-9!@#$%^&*()-_=+' </dev/urandom | fold -w 16 | head -n 1)
 
