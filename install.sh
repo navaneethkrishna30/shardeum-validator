@@ -97,6 +97,6 @@ docker-safe exec shardeum-validator operator-cli gui set password "$PASSWORD"
 
 echo "$PASSWORD" > /root/password.txt
 
-DASHBOARD_URL="http://${EXTERNALIP}:${DASHPORT}/"
+DASHBOARD_URL="https://${EXTERNALIP}:${DASHPORT}/"
 echo "$DASHBOARD_URL" > /root/dashboard_url.txt
 echo "Shardeum Validator is now running."
